@@ -1,6 +1,6 @@
-package com.a702.hup.domain.document.mongodb;
+package com.a702.hup.domain.documents.mongodb;
 
-import com.a702.hup.domain.document.mongodb.entity.DocumentsMongo;
+import com.a702.hup.domain.documents.mongodb.entity.DocumentsMongo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,8 +18,8 @@ public class DocumentsMongoService {
      * @date 2024-04-30
      * @description 문서 영구 저장 (MongoDB)
      **/
-    public void save(String documentId, String content) {
-        DocumentsMongo documentsMongo = findOrCreateDocuments(documentId);
+    public void save(String documentsId, String content) {
+        DocumentsMongo documentsMongo = findOrCreateDocuments(documentsId);
         documentsMongo.updateContent(content);
         documentsMongoRepository.save(documentsMongo);
     }
@@ -29,9 +29,9 @@ public class DocumentsMongoService {
      * @date 2024-04-30
      * @description 문서 조회, 없을 시 생성
      **/
-    private DocumentsMongo findOrCreateDocuments(String documentId) {
-        return documentsMongoRepository.findById(documentId).orElseGet(
-                () -> DocumentsMongo.builder().documentId(documentId).build()
+    private DocumentsMongo findOrCreateDocuments(String documentsId) {
+        return documentsMongoRepository.findById(documentsId).orElseGet(
+                () -> DocumentsMongo.builder().documentsId(documentsId).build()
         );
     }
 }

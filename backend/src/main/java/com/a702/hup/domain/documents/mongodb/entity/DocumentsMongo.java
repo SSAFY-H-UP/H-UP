@@ -1,20 +1,22 @@
-package com.a702.hup.domain.document.mongodb.entity;
+package com.a702.hup.domain.documents.mongodb.entity;
 
 import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NonNull;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Document(collection = "documents")
 public class DocumentsMongo {
     @Id
-    private String id;
+    @NonNull
+    private String documentsId;
     private String content;
 
     @Builder
-    public DocumentsMongo(String documentId) {
-        this.id = documentId;
+    public DocumentsMongo(@NonNull String documentsId) {
+        this.documentsId = documentsId;
         content = "";
     }
 

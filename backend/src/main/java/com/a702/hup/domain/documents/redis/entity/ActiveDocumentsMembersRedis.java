@@ -1,4 +1,4 @@
-package com.a702.hup.domain.document.redis.entity;
+package com.a702.hup.domain.documents.redis.entity;
 
 import com.a702.hup.application.data.dto.DocumentsMemberInfo;
 import lombok.Getter;
@@ -14,24 +14,24 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @RequiredArgsConstructor
-@RedisHash(value = "documentMembers")
+@RedisHash(value = "documentsMembers")
 public class ActiveDocumentsMembersRedis {
 
     @Id
     @NonNull
-    private String documentId;
-    private List<DocumentsMemberInfo> memberDtoList = new ArrayList<>();
+    private String documentsId;
+    private List<DocumentsMemberInfo> memberInfoList = new ArrayList<>();
 
     public void addMember(DocumentsMemberInfo memberDto){
-        memberDtoList.add(memberDto);
+        memberInfoList.add(memberDto);
     }
 
     public void removeMember(DocumentsMemberInfo memberDto){
-        memberDtoList.remove(memberDto);
+        memberInfoList.remove(memberDto);
     }
 
     public boolean isDocumentMemberEmpty() {
-        return memberDtoList.isEmpty();
+        return memberInfoList.isEmpty();
     }
 
 }
