@@ -30,4 +30,8 @@ public class ActiveDocumentsMembersRedis {
         memberDtoList.remove(memberDto);
     }
 
+    public boolean isDocumentMemberEmpty() {
+        return memberDtoList.isEmpty();
+    }
+
 }
