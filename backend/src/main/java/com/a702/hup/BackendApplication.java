@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
@@ -11,13 +12,6 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 @SpringBootApplication
 @EnableRedisRepositories(basePackages = {
 		"**.redis.**"
-})
-@EnableMongoRepositories(basePackages = {
-		"**.mongodb.**"
-})
-@EnableJpaRepositories(excludeFilters = {
-		@ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.*.redis.*"),
-		@ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.*.mongodb.*")
 })
 public class BackendApplication {
 

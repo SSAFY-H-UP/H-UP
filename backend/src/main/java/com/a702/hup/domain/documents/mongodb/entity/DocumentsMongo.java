@@ -4,6 +4,7 @@ import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
@@ -11,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class DocumentsMongo {
     @Id
     @NonNull
+    @Indexed(unique=true)
     private String documentsId;
     private String content;
 

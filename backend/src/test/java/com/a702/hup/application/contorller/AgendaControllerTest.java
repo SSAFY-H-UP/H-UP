@@ -1,6 +1,6 @@
 package com.a702.hup.application.contorller;
 
-import com.a702.hup.application.dto.request.AgendaCreateRequest;
+import com.a702.hup.application.data.request.AgendaCreateRequest;
 import com.a702.hup.application.facade.AgendaFacade;
 import com.a702.hup.global.config.SecurityConfig;
 import com.a702.hup.global.config.security.filter.JwtAuthorizationFilter;
