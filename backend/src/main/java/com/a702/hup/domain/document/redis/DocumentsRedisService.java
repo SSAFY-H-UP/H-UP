@@ -101,16 +101,25 @@ public class DocumentsRedisService {
 
         activeDocumentsMembersRedis.removeMember(memberDto);
         if (activeDocumentsMembersRedis.isDocumentMemberEmpty()) {
-            log.info("Redis Empty");
             documentsMongoService.save(documentId, getLatestContent(documentId));
         }
         return DocumentsMembersResponse.from(activeDocumentsMembersRedisRepository.save(activeDocumentsMembersRedis));
     }
 
+    /**
+     * @author 손현조
+     * @date 2024-04-30
+     * @description 최근 문서 내용 Redis 에서 가져오기
+     **/
     private String getLatestContent(String documentId) {
         return findDocumentRedisById(documentId).getContent();
     }
 
+    /**
+     * @author 손현조
+     * @date 2024-04-30
+     * @description Redis 에서 문서 조회
+     **/
     public DocumentsRedis findDocumentRedisById(String documentId) {
         return documentsRedisRepository.findById(documentId).orElseThrow(
                 () -> new DocumentException(ErrorCode.API_ERROR_DOCUMENT_NOT_FOUND)

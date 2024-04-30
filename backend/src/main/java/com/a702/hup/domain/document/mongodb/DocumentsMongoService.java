@@ -13,12 +13,22 @@ import org.springframework.transaction.annotation.Transactional;
 public class DocumentsMongoService {
     private final DocumentsMongoRepository documentsMongoRepository;
 
+    /**
+     * @author 손현조
+     * @date 2024-04-30
+     * @description 문서 영구 저장 (MongoDB)
+     **/
     public void save(String documentId, String content) {
         DocumentsMongo documentsMongo = findOrCreateDocuments(documentId);
         documentsMongo.updateContent(content);
         documentsMongoRepository.save(documentsMongo);
     }
 
+    /**
+     * @author 손현조
+     * @date 2024-04-30
+     * @description 문서 조회, 없을 시 생성
+     **/
     private DocumentsMongo findOrCreateDocuments(String documentId) {
         return documentsMongoRepository.findById(documentId).orElseGet(
                 () -> DocumentsMongo.builder().documentId(documentId).build()
