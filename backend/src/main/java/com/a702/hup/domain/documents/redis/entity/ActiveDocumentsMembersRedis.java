@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -20,18 +20,18 @@ public class ActiveDocumentsMembersRedis {
     @Id
     @NonNull
     private String documentsId;
-    private List<DocumentsMemberInfo> memberInfoList = new ArrayList<>();
+    private Set<DocumentsMemberInfo> memberInfoSet = new HashSet<>();
 
-    public void addMember(DocumentsMemberInfo memberDto){
-        memberInfoList.add(memberDto);
+    public void addMember(DocumentsMemberInfo memberInfo){
+        memberInfoSet.add(memberInfo);
     }
 
-    public void removeMember(DocumentsMemberInfo memberDto){
-        memberInfoList.remove(memberDto);
+    public void removeMember(DocumentsMemberInfo memberInfo){
+        memberInfoSet.remove(memberInfo);
     }
 
     public boolean isDocumentMemberEmpty() {
-        return memberInfoList.isEmpty();
+        return memberInfoSet.isEmpty();
     }
 
 }
