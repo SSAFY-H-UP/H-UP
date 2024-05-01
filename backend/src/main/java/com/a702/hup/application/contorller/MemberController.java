@@ -4,10 +4,13 @@ import com.a702.hup.application.data.request.MemberSignUpRequest;
 import com.a702.hup.application.data.response.IdCheckResponse;
 import com.a702.hup.application.data.response.MemberInfoResponse;
 import com.a702.hup.domain.member.MemberService;
+import com.a702.hup.global.config.security.SecurityUserDetailsDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * @author 이경태
@@ -25,7 +29,8 @@ public class MemberController {
     @PostMapping("/signup")
     public ResponseEntity<Void> signUp(@RequestBody MemberSignUpRequest memberSignUpRequest) {
         log.info("[+] MemberController :: signUp :: start");
-        memberService.signUp(memberSignUpRequest);
+        memberService.signUp(memberSignUpRequest
+                .toEntity(passwordEncoder.encode(memberSignUpRequest.getPassword())));
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .build();
@@ -49,11 +54,14 @@ public class MemberController {
      * @description 회원 정보 조회
      **/
     @GetMapping
-    public ResponseEntity<MemberInfoResponse> getInfo(@RequestParam int memberId) {
-        log.info("[+] MemberController :: getInfo :: start");
+    public ResponseEntity<MemberInfoResponse> getInfo(
+            @RequestParam int memberId,
+            @AuthenticationPrincipal SecurityUserDetailsDto securityUserDetailsDto
+    ) {
+        log.info("[+] MemberController :: getInfo :: securityUserDetailsDto: {}", securityUserDetailsDto);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(memberService.findMemberInfoById(memberId));
+                .body(memberService.findMemberInfoById(memberId, securityUserDetailsDto));
     }
 
 //    public ResponseEntity<Void> updateInfo(@RequestParam int memberId, MemberInfoResponse memberInfoResponse) {}

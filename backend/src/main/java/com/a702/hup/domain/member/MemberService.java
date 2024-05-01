@@ -1,6 +1,5 @@
 package com.a702.hup.domain.member;
 
-import com.a702.hup.application.data.request.MemberSignUpRequest;
 import com.a702.hup.application.data.response.IdCheckResponse;
 import com.a702.hup.application.data.response.MemberInfoResponse;
 import com.a702.hup.domain.member.entity.Member;
@@ -9,7 +8,6 @@ import com.a702.hup.global.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class MemberService {
     private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
 
     /**
      * @author 이경태
@@ -27,9 +24,8 @@ public class MemberService {
      * @description 회원 가입 시 사용되는 save 함수
      **/
     @Transactional
-    public void signUp(MemberSignUpRequest memberSignUpRequest) {
-        save(memberSignUpRequest
-                .toEntity(passwordEncoder.encode(memberSignUpRequest.getPassword())));
+    public void signUp(Member member) {
+        save(member);
     }
 
     /**
@@ -37,8 +33,9 @@ public class MemberService {
      * @date 2024-04-29
      * @description 멤버 정보 반환 함수
      **/
-    public MemberInfoResponse findMemberInfoById(Integer id) {
+    public MemberInfoResponse findMemberInfoById(Integer id, SecurityUserDetailsDto securityUserDetailsDto) {
         // 본인 아니면 에러
+        log.info("id : {}, userDetails : {}", id, securityUserDetailsDto.memberId());
         if(!isAuthorized(id))
             throw new MemberException(ErrorCode.API_ERROR_UNAUTHORIZED);
         return MemberInfoResponse.from(findById(id));
