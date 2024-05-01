@@ -35,6 +35,7 @@ public class Member extends BaseEntity {
     private String img;
 
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "default USER")
     private Role role;
 
     @OneToMany(mappedBy = "member")
@@ -68,11 +69,11 @@ public class Member extends BaseEntity {
     private List<Notification> notificationList = new ArrayList<>();
 
     @Builder
-    public Member(String name, String userId, String password, String img) {
+    public Member(String name, String userId, String password, String img, Role role) {
         this.name = name;
         this.userId = userId;
         this.password = password;
         this.img = img;
-        this.role = Role.USER;
+        this.role = role;
     }
 }
