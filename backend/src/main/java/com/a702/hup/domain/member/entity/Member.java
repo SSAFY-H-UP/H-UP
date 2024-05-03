@@ -35,7 +35,6 @@ public class Member extends BaseEntity {
     private String img;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "default USER")
     private Role role;
 
     @OneToMany(mappedBy = "member")
@@ -74,6 +73,6 @@ public class Member extends BaseEntity {
         this.userId = userId;
         this.password = password;
         this.img = img;
-        this.role = role;
+        this.role = role == null ? Role.USER : role;
     }
 }
