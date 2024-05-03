@@ -1,7 +1,5 @@
-package com.a702.hup.domain.auth;
+package com.a702.hup.domain.auth.redis;
 
-import com.a702.hup.domain.auth.redis.Token;
-import com.a702.hup.domain.auth.redis.TokenRedisRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
