@@ -1,7 +1,7 @@
 package com.a702.hup.domain.member;
 
+import com.a702.hup.application.data.dto.MemberInfo;
 import com.a702.hup.application.data.response.IdCheckResponse;
-import com.a702.hup.application.data.response.MemberInfoResponse;
 import com.a702.hup.domain.member.entity.Member;
 import com.a702.hup.global.config.security.SecurityUserDetailsDto;
 import com.a702.hup.global.error.ErrorCode;
@@ -11,10 +11,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
+@Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-@Service
 public class MemberService {
     private final MemberRepository memberRepository;
 
@@ -33,12 +35,12 @@ public class MemberService {
      * @date 2024-04-29
      * @description 멤버 정보 반환 함수
      **/
-    public MemberInfoResponse findMemberInfoById(Integer id, SecurityUserDetailsDto securityUserDetailsDto) {
+    public MemberInfo findMemberInfoById(Integer id) {
         // 본인 아니면 에러
         log.info("id : {}, userDetails : {}", id, securityUserDetailsDto.memberId());
         if(!isAuthorized(id))
             throw new MemberException(ErrorCode.API_ERROR_UNAUTHORIZED);
-        return MemberInfoResponse.from(findById(id));
+        return MemberInfo.from(findById(id));
     }
 
     /**
@@ -65,21 +67,29 @@ public class MemberService {
 
     /**
      * @author 이경태
-     * @date 2024-04-28
-     * @description repository save
-     **/
-    private void save(Member member) {
-        memberRepository.save(member);
-    }
-
-    /**
-     * @author 이경태
      * @date 2024-04-29
      * @description Id로 member 찾는 함수
      **/
     public Member findById(Integer id) {
         return memberRepository.findById(id)
             .orElseThrow(() -> new MemberException(ErrorCode.API_ERROR_MEMBER_NOT_FOUND));
+    }
+
+    public List<Member> findAll(List<Integer> memberIdList) {
+        return memberRepository.findByIdIsInAndDeletedAtIsNull(memberIdList);
+    }
+
+    public Member findById(String id){
+        return this.findById(Integer.parseInt(id));
+    }
+
+    /**
+     * @author 이경태
+     * @date 2024-04-28
+     * @description repository save
+     **/
+    private void save(Member member) {
+        memberRepository.save(member);
     }
 
     /**
@@ -92,5 +102,4 @@ public class MemberService {
         log.info("[+] MemberService :: findMemberInfoById :: requested Id : {}, logined Id : {}", memberId, securityUserDetailsDto.memberId());
         return memberId.equals(securityUserDetailsDto.memberId());
     }
-
 }

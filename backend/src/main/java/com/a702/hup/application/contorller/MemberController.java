@@ -1,8 +1,8 @@
 package com.a702.hup.application.contorller;
 
+import com.a702.hup.application.data.dto.MemberInfo;
 import com.a702.hup.application.data.request.MemberSignUpRequest;
 import com.a702.hup.application.data.response.IdCheckResponse;
-import com.a702.hup.application.data.response.MemberInfoResponse;
 import com.a702.hup.domain.member.MemberService;
 import com.a702.hup.global.config.security.SecurityUserDetailsDto;
 import lombok.RequiredArgsConstructor;
@@ -54,10 +54,11 @@ public class MemberController {
      * @description 회원 정보 조회
      **/
     @GetMapping
-    public ResponseEntity<MemberInfoResponse> getInfo(
+    public ResponseEntity<MemberInfo> getInfo(
             @RequestParam int memberId,
             @AuthenticationPrincipal SecurityUserDetailsDto securityUserDetailsDto
     ) {
+        log.info("[+] MemberController :: getInfo :: start");
         log.info("[+] MemberController :: getInfo :: securityUserDetailsDto: {}", securityUserDetailsDto);
         return ResponseEntity
                 .status(HttpStatus.OK)

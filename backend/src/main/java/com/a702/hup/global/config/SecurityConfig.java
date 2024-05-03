@@ -22,8 +22,7 @@ import org.springframework.security.config.annotation.web.configurers.HttpBasicC
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -39,6 +38,9 @@ public class SecurityConfig {
     private static final String MEMBER = "/member/**";
     private static final String RESOURCES = "/resources/**";
     private static final String SWAGGER = "/swagger-ui/**";
+    private static final String WEBSOCKET = "/ws/**";
+    private static final String SWAGGER_V3 = "/v3/api-docs/**";
+    private static final String ERROR = "error/**";
 
     /**
      * @author 이경태
@@ -80,13 +82,16 @@ public class SecurityConfig {
                                 HOME,
                                 MEMBER,
                                 RESOURCES,
-                                SWAGGER
+                                SWAGGER,
+                                WEBSOCKET,
+                                SWAGGER_V3,
+                                ERROR
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
                 // filter 추가
-                .addFilterBefore(jwtAuthorizationFilter, BasicAuthenticationFilter.class)
-                .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthorizationFilter, AuthorizationFilter.class)
+                .addFilterBefore(customAuthenticationFilter, JwtAuthorizationFilter.class)
 
                 // 인증 / 인가 과정 중의 에러를 처리
 //                .exceptionHandling(exceptions -> exceptions
