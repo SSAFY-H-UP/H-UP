@@ -37,7 +37,6 @@ public class MemberService {
      **/
     public MemberInfo findMemberInfoById(Integer id) {
         // 본인 아니면 에러
-        log.info("id : {}, userDetails : {}", id, securityUserDetailsDto.memberId());
         if(!isAuthorized(id))
             throw new MemberException(ErrorCode.API_ERROR_UNAUTHORIZED);
         return MemberInfo.from(findById(id));

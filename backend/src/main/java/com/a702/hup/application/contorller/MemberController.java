@@ -1,15 +1,12 @@
 package com.a702.hup.application.contorller;
 
-import com.a702.hup.application.data.dto.MemberInfo;
 import com.a702.hup.application.data.request.MemberSignUpRequest;
 import com.a702.hup.application.data.response.IdCheckResponse;
 import com.a702.hup.domain.member.MemberService;
-import com.a702.hup.global.config.security.SecurityUserDetailsDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,23 +43,6 @@ public class MemberController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(memberService.idCheck(userId));
-    }
-
-    /**
-     * @author 이경태
-     * @date 2024-04-29
-     * @description 회원 정보 조회
-     **/
-    @GetMapping
-    public ResponseEntity<MemberInfo> getInfo(
-            @RequestParam int memberId,
-            @AuthenticationPrincipal SecurityUserDetailsDto securityUserDetailsDto
-    ) {
-        log.info("[+] MemberController :: getInfo :: start");
-        log.info("[+] MemberController :: getInfo :: securityUserDetailsDto: {}", securityUserDetailsDto);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(memberService.findMemberInfoById(memberId, securityUserDetailsDto));
     }
 
 //    public ResponseEntity<Void> updateInfo(@RequestParam int memberId, MemberInfoResponse memberInfoResponse) {}
