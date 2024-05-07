@@ -1,5 +1,6 @@
 package com.a702.hup.application.contorller;
 
+import com.a702.hup.application.data.request.TodoAssigneeSaveRequest;
 import com.a702.hup.application.data.request.TodoSaveRequest;
 import com.a702.hup.application.data.request.TodoStatusUpdateRequest;
 import com.a702.hup.application.facade.TodoFacade;
@@ -30,9 +31,21 @@ public class TodoController {
                 .build();
     }
 
+    @PostMapping
+    public ResponseEntity<Void> save(
+            @AuthenticationPrincipal(errorOnInvalidType = true) SecurityUserDetailsDto user,
+            @RequestBody TodoAssigneeSaveRequest request) {
+        todoFacade.saveAssignee(user.memberId(), request);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .build();
+    }
+
     @PutMapping("/status")
-    public ResponseEntity<Void> updateStatus(@RequestBody TodoStatusUpdateRequest request) {
-        todoService.updateStatus(request);
+    public ResponseEntity<Void> updateStatus(
+            @AuthenticationPrincipal(errorOnInvalidType = true) SecurityUserDetailsDto user,
+            @RequestBody TodoStatusUpdateRequest request) {
+        todoFacade.updateStatus(user.memberId(), request);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .build();
