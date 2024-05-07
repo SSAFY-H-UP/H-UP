@@ -24,7 +24,7 @@ public class TodoFacade {
     /**
      * @author 손현조
      * @date 2024-05-07
-     * @description 할 일 저장
+     * @description 할 일 생성 (할 일 생성자가 실행)
      **/
     @Transactional
     public void save(Integer requesterId, TodoSaveRequest request) {
@@ -41,7 +41,7 @@ public class TodoFacade {
     /**
      * @author 손현조
      * @date 2024-05-07
-     * @description 할 일 할당자 추가
+     * @description 할 일 담당자 추가
      **/
     private void addTodoMember(Todo todo, List<Integer> memberIdList) {
         memberIdList.stream()

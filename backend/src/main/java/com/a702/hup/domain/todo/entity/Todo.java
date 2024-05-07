@@ -47,4 +47,8 @@ public class Todo extends BaseEntity {
         issue.getTodoList().add(this);
         this.issue = issue;
     }
+
+    public void updateTodoStatus(TodoStatus status) {
+        this.status = status;
+    }
 }

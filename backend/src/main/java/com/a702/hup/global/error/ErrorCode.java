@@ -38,6 +38,9 @@ public enum ErrorCode {
     API_ERROR_AGENDA_NOT_FOUND(400,"A001","의사결정을 찾을 수 없음"),
     API_ERROR_AGENDA_MEMBER_NOT_FOUND(400,"A002","의사결정 담당자가 아닙니다"),
 
+    // Todo
+    API_ERROR_TODO_NOT_FOUND(400,"T001","의사결정을 찾을 수 없음"),
+
     // Auth
     API_ERROR_USERNAME_NOT_FOUND(400, "AUTH001", "아이디 입력 오류"),
     API_ERROR_AUTHENTICATION_FAIL(401, "AUTH002", "인증 실패"),

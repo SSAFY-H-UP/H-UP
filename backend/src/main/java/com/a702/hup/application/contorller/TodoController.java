@@ -1,23 +1,23 @@
 package com.a702.hup.application.contorller;
 
 import com.a702.hup.application.data.request.TodoSaveRequest;
+import com.a702.hup.application.data.request.TodoStatusUpdateRequest;
 import com.a702.hup.application.facade.TodoFacade;
+import com.a702.hup.domain.todo.TodoService;
 import com.a702.hup.global.config.security.SecurityUserDetailsDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/todo")
 public class TodoController {
+    private final TodoService todoService;
     private final TodoFacade todoFacade;
 
     @PostMapping
@@ -27,6 +27,14 @@ public class TodoController {
         todoFacade.save(user.memberId(), request);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
+                .build();
+    }
+
+    @PutMapping("/status")
+    public ResponseEntity<Void> updateStatus(@RequestBody TodoStatusUpdateRequest request) {
+        todoService.updateStatus(request);
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .build();
     }
 }
