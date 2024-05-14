@@ -18,15 +18,15 @@ let pendingUpdates = {};
 // Uploads a file to tmpfiles.org and returns the URL to the uploaded file.
 async function uploadFile(file) {
   const body = new FormData();
-  body.append("file", file);
- 
-  const ret = await fetch("https://tmpfiles.org/api/v1/upload", {
-    method: "POST",
+  body.append('file', file);
+
+  const ret = await fetch('https://tmpfiles.org/api/v1/upload', {
+    method: 'POST',
     body: body,
   });
   return (await ret.json()).data.url.replace(
-    "tmpfiles.org/",
-    "tmpfiles.org/dl/"
+    'tmpfiles.org/',
+    'tmpfiles.org/dl/',
   );
 }
 
@@ -40,7 +40,7 @@ function BlockNote() {
     collaboration: {
       fragment: ydoc.getXmlFragment('co-work'),
     },
-    uploadFile
+    uploadFile,
   });
 
   //   useEffect(() => {
@@ -183,7 +183,13 @@ function BlockNote() {
     messageId++;
   }
 
-  return <BlockNoteView editor={editor} onChange={handleEditorChange} data-theming-css-variables-demo />;
+  return (
+    <BlockNoteView
+      editor={editor}
+      onChange={handleEditorChange}
+      data-theming-css-variables-demo
+    />
+  );
 }
 
 export default BlockNote;
