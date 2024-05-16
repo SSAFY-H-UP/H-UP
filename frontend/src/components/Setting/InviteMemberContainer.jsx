@@ -1,5 +1,4 @@
-import { requestTeamMember } from '@api/services/setting';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const InviteMemberContainer = ({ members, inviteMembers, setInviteMembers, invite}) => {
   const [memberName, setMemberName] = useState('');

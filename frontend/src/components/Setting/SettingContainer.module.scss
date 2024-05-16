@@ -1,0 +1,19 @@
+.menu{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.menu_item{
+  opacity: 0.5; /* 기본 opacity 설정 */
+  cursor: pointer;
+}
+
+.menu_item.active {
+    opacity: 1; /* 활성화된 메뉴의 opacity */
+    font-weight: bold; /* 활성화된 메뉴의 글꼴 굵기 */
+  }
+
+.header{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}

@@ -1,31 +1,61 @@
-import styles from './TeamManagement.module.scss';
-import ProjectManagement from './ProjectMangement';
-import TeamManagement from './TeamManagement';
+import styles from './SettingContainer.module.scss';
 import Modal from 'react-modal';
-import { useState } from 'react';
+import { useState ,useEffect} from 'react';
+import TeamManagementItem from './TeamManagementItem';
+import ProjectManagementItem from './ProjectManagementItem';
+import { requestMyTeam } from '@api/services/setting';
 
 const SettingContainer = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [settingOption, setSettingOption] = useState('');
+  const [teams, setTeams] = useState([]);
+
+  const getTeamInfo = async () => {
+    const response = await requestMyTeam();
+    setTeams(response.data.teamInfoList);
+  };
+
+  useEffect(() => {
+    getTeamInfo();
+  }, []);
 
   return (
     <div>
       <button onClick={() => setIsOpen(!isOpen)}>일단클릭</button>
       <Modal isOpen={isOpen}>
-        <h1>Settings</h1>
-        <div>
-          <button onClick={() => setSettingOption('team')}>
-            Team Management
-          </button>
-          <button onClick={() => setSettingOption('project')}>
-            Project Management
-          </button>
+        {/* header */}
+        <div className={styles.header}>
+          <h3>Settings</h3>
+          <div className={styles.menu}>
+            <div 
+              className={`${styles.menu_item} ${settingOption === 'team' ? styles.active : ''}`} 
+              onClick={() => setSettingOption('team')}>
+                Team Management
+            </div>
+            <div 
+              className={`${styles.menu_item} ${settingOption === 'project' ? styles.active : ''}`}
+              onClick={() => setSettingOption('project')}>
+                Project Management
+            </div>
+          </div>
         </div>
+        {/* body */}
         <div>
           {settingOption === 'team' ? (
-            <TeamManagement />
-          ) : (
-            <ProjectManagement />
+            <div>  
+              {/* TEAM MANAGEMENT */}
+              {teams &&
+                teams.map(team => (
+                  <TeamManagementItem key={team.id} team={team} />
+                ))}
+            </div>) : (
+            <div>  
+              {/* TEAM MANAGEMENT */}
+              {teams &&
+                teams.map(team => (
+                  <ProjectManagementItem key={team.id} team={team} />
+                ))}
+            </div>
           )}
         </div>
       </Modal>

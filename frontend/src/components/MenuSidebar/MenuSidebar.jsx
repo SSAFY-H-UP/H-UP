@@ -17,7 +17,8 @@ const MenuSidebar = () => {
     try {
       setProjectList([]);
       const teamData = await LoadTeamProjectList(teamId);
-      setProjectList(teamData.data.projectInfoList);
+      console.log(teamData.data.responseList);
+      setProjectList(teamData.data.responseList);
     } catch (error) {
       console.log(error)
     }
@@ -40,7 +41,7 @@ const MenuSidebar = () => {
 
         if (teams.length > 0) {
           const teamData = await LoadTeamProjectList(teams[0].id);
-          setProjectList(teamData.data.projectInfoList);
+          setProjectList(teamData.data.responseList);
         }
       } catch (error) {
         console.log(error)
@@ -53,9 +54,7 @@ const MenuSidebar = () => {
   return (
     <>
       <div className='bar-container'>
-        <div
-          className={`${styles.sidebar} ${isOpen == true ? styles.active : ''}`}
-        >
+        <div className={`${styles.sidebar} ${isOpen == true ? styles.active : ''}`}>
           <div className={styles.sd_header}>
             <h4 className='mb-0'>사이드 바</h4>
             <div className='btn' onClick={ShowSidebar}>

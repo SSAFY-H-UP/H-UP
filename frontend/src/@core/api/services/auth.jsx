@@ -20,7 +20,6 @@ export const requestIdCheck = userId => {
   });
 };
 
-<<<<<<< Updated upstream
 // 토큰 갱신
 export const requestTokenRefresh = () => {
   return baseAxios.post(`${API_URI.REFRESH}`, {
@@ -28,8 +27,8 @@ export const requestTokenRefresh = () => {
       refreshToken: localStorage.getItem('refreshToken'),
     },
   });
-=======
+}
+
 export const requestAllMember = () => {
   return baseAxios.get(`${API_URI.SHOW_MEMBER_ALL}`)
->>>>>>> Stashed changes
 };
