@@ -5,9 +5,29 @@ import TeamManagementItem from './TeamManagementItem';
 import ProjectManagementItem from './ProjectManagementItem';
 import { requestMyTeam } from '@api/services/setting';
 
+// 모달 스타일 정의
+const modalStyles = {
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  content: {
+    position: 'relative',
+    background: 'white',
+    width: '80%',
+    maxWidth: '600px',
+    margin: 'auto',
+    borderRadius: '8px',
+    padding: '20px',
+    boxShadow: '0 5px 15px rgba(0, 0, 0, 0.3)',
+  },
+};
+
 const SettingContainer = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [settingOption, setSettingOption] = useState('');
+  const [settingOption, setSettingOption] = useState('team');
   const [teams, setTeams] = useState([]);
 
   const getTeamInfo = async () => {
@@ -22,10 +42,16 @@ const SettingContainer = () => {
   return (
     <div>
       <button onClick={() => setIsOpen(!isOpen)}>일단클릭</button>
-      <Modal isOpen={isOpen}>
+      <Modal isOpen={isOpen} 
+        onRequestClose={() => setIsOpen(false)}
+        style={modalStyles}
+      >
         {/* header */}
         <div className={styles.header}>
           <h3>Settings</h3>
+          <button className={styles.closeButton} onClick={() => setIsOpen(false)}>
+            &times;
+          </button>
           <div className={styles.menu}>
             <div 
               className={`${styles.menu_item} ${settingOption === 'team' ? styles.active : ''}`} 
@@ -40,7 +66,7 @@ const SettingContainer = () => {
           </div>
         </div>
         {/* body */}
-        <div>
+        <div className={styles.body}>
           {settingOption === 'team' ? (
             <div>  
               {/* TEAM MANAGEMENT */}

@@ -48,7 +48,7 @@ const TeamManagementItem = ({ team }) => {
       </div>
       {isOpen && 
         <div className={styles.body}>
-          <MemberManagement members={members}/>
+          <MemberManagement members={teamMembers}/>
           <InviteMemberContainer members = {members} inviteMembers = {inviteMembers} setInviteMembers = {setInviteMembers} invite = {invite}/>
         </div>
       }
