@@ -1,6 +1,5 @@
-import { baseAxios } from '@api';
 import API_URI from '@constant/uri';
-import { authAxios } from '..';
+import { authAxios } from '@api';
 
 export const requestMyTeam = () => {
   return authAxios.get(`${API_URI.SHOW_TEAM}`);

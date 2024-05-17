@@ -34,14 +34,14 @@ const API_URI = {
   SHOW_TEAM_PROJECT: '/project/list/team',
   SHOW_PROJECT_MEMBER : '/project/members',
   INVITE_PROJECT_MEMBER : '/project/member',
-  INVITE_TEAM_MEMBER : '/team/members',\
+  INVITE_TEAM_MEMBER : '/team/members',
   MY_PROJECT_LIST: '/project/list/team',
 
   // to_do
   TODO: '/todo',
   TODO_ASSIGN: '/todo/assignee',
   TODO_LIST: '/todo/list',
-  
+
   // agenda
   AGENDA_LIST: '/agenda/list/project',
 };
