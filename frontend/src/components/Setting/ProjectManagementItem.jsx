@@ -13,7 +13,7 @@ const ProjectManagementItem = ({ team }) => {
 
   const getProject = async () => {
     const response = await requestProject(team.id);
-    setProjects(response.data.responseList);
+    setProjects(response.data.projectInfoList);
   };
 
   useEffect(() => {

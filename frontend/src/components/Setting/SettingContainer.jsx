@@ -25,8 +25,8 @@ const modalStyles = {
   },
 };
 
-const SettingContainer = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const SettingContainer = ({isOpen, closeSetting}) => {
+  // const [isOpen, setIsOpen] = useState(false);
   const [settingOption, setSettingOption] = useState('team');
   const [teams, setTeams] = useState([]);
 
@@ -40,16 +40,14 @@ const SettingContainer = () => {
   }, []);
 
   return (
-    <div>
-      <button onClick={() => setIsOpen(!isOpen)}>일단클릭</button>
       <Modal isOpen={isOpen} 
-        onRequestClose={() => setIsOpen(false)}
+        onRequestClose={closeSetting}
         style={modalStyles}
       >
         {/* header */}
         <div className={styles.header}>
           <h3>Settings</h3>
-          <button className={styles.closeButton} onClick={() => setIsOpen(false)}>
+          <button className={styles.closeButton} onClick={closeSetting}>
             &times;
           </button>
           <div className={styles.menu}>
@@ -85,7 +83,6 @@ const SettingContainer = () => {
           )}
         </div>
       </Modal>
-    </div>
   );
 };
 

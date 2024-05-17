@@ -3,7 +3,6 @@ import './App.css';
 import Footer from '@component/Footer/Footer';
 import MenuSidebar from '@component/MenuSidebar/MenuSidebar';
 import MessengerSidebar from '@component/MessengerSidebar/MessengerSidebar';
-import SettingContainer from '@component/Setting/SettingContainer';
 import NavBar from '@component/Navbar/Navbar';
 import Layout from '@component/layout/Layout';
 import IssueEditorPage from '@page/IssueEditorPage';
@@ -37,7 +36,6 @@ function App() {
             <Route path='/' element={<Layout />}>
               <Route path='project/:id' element={<ProjectPage />} />
               <Route path='issue/:id' element={<IssueEditorPage />} />
-              <Route path='setting' element={<SettingContainer />} />
             </Route>
           </Routes>
         </main>
