@@ -35,7 +35,7 @@ function App() {
               </Route>
             ) : null}
             <Route path='/' element={<Layout />}>
-              <Route index element={<ProjectPage />} />
+              <Route path='project/:id' element={<ProjectPage />} />
               <Route path='issue/:id' element={<IssueEditorPage />} />
               <Route path='setting' element={<SettingContainer />} />
             </Route>

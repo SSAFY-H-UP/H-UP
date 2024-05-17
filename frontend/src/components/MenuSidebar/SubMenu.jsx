@@ -1,35 +1,27 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './SubMenu.module.scss';
-import { LoadProjectIssueList } from '@api/services/team';
-import {useEffect} from 'react';
+
+import { issueState } from '@recoil/issue';
+import { useRecoilState } from 'recoil';
 
 const SubMenu = ({ item }) => {
+  console.log(item);
   const [subnav, setSubnav] = useState(false);
-  const [issueList, setIssueList] = useState([])
+  const [issueList] = useRecoilState(issueState);
 
-  const showSubnav = () => {setSubnav(!subnav)};
-
-  const fetchData = async () => {
-    try {
-      const response = await LoadProjectIssueList(item.id); 
-      setIssueList(response.data.responseList);
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  useEffect(() => {
-    fetchData();
-  }, [])
-
+  const showSubnav = () => {
+    setSubnav(!subnav);
+  };
 
   return (
     <>
       <Link
         className={styles.sidebarLink}
         to={`/project/${item.id}`}
-        onClick={issueList && showSubnav}
+        onClick={() => {
+          showSubnav();
+        }}
       >
         <div>
           <div>
@@ -44,27 +36,26 @@ const SubMenu = ({ item }) => {
           </div>
         </div>
       </Link>
-        {subnav &&
-          issueList.map((item, index) => {
-            return (
-              <Link
-                className={styles.dropdownLink}
-                to={`/issue/${item.issueId}`}
-                key={index}
-              >
-                <span>{item.title}</span>
-              </Link>
-            );
-          })}
+      {subnav &&
+        issueList.map(item => {
+          return (
+            <Link
+              key={item.issueId}
+              className={styles.dropdownLink}
+              to={`/issue/${item.issueId}`}
+            >
+              <subMenuSpan>{item.title}</subMenuSpan>
+            </Link>
+          );
+        })}
     </>
   );
 };
 
 export default SubMenu;
 
-
-
-{/* <Link
+{
+  /* <Link
         className={styles.sidebarLink}
         to={item.path}
         onClick={item.subNav && showSubnav}
@@ -72,7 +63,7 @@ export default SubMenu;
         <div>
           <div>
             {item.icon}
-            <span>{item.title}</span>
+            <subMenuSpan>{item.title}</subMenuSpan>
           </div>
           <div>
             {item.subNav && subnav
@@ -92,7 +83,8 @@ export default SubMenu;
               key={index}
             >
               {item.icon}
-              <span>{item.title}</span>
+              <subMenuSpan>{item.title}</subMenuSpan>
             </Link>
           );
-        })} */}
+        })} */
+}
