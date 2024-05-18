@@ -1,40 +1,69 @@
-import React from "react";
-import styles from "./IssueItem.module.scss";
+import checkIcon from '@asset/img/check_icon.png';
+import pauseIcon from '@asset/img/pause_icon.png';
+import playIcon from '@asset/img/play_icon.png';
+import upArrowIcon from '@asset/img/up_arrow_icon.png';
+import STATUS from '@constant/status';
+import { useEffect, useState } from 'react';
+import styles from './IssueItem.module.scss';
+import UserIcon from '@component/common/UserIcon';
 
 const IssueItem = ({ issue, onClick }) => {
-    const {id, title, content, progress, start, end, imageList }= issue;
+  const {
+    issueId,
+    title,
+    status,
+    startDate,
+    endDate,
+    memberInfo,
+    assigneeInfoList,
+  } = issue;
+  const { CREATED, SELECTED, PROGRESS, COMPLETED } = STATUS;
+  const [iconImage, setIconImage] = useState('');
 
-    const formatToDate = (jsDateStr) => {
-        const date = new Date(jsDateStr);
-        const year = date.getFullYear();
-        const month = date.getMonth()+1;
-        const day = date.getDate();
-        const hour = date.getHours();
-        const minutes = date.getMinutes();
-        const formattedDate = `${year}년 ${month}월 ${day}일 ${hour}:${minutes}`;
-        return formattedDate;
-      };
+  const formatToDate = jsDateStr => {
+    const date = new Date(jsDateStr);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    // const hour = date.getHours();
+    // const minutes = date.getMinutes();
+    // const formattedDate = `${year}년 ${month}월 ${day}일 ${hour}:${minutes}`;
+    const formattedDate = `${year}. ${month}. ${day}`;
+    return formattedDate;
+  };
 
-    return (
-        <div className={styles.issue_item_container} onClick={onClick}>
-            <div>
-                <div>
-                    <div className="status">{progress}</div>
-                    <div className="time">{formatToDate(start)} - {formatToDate(end)}</div>
-                    <div className="task-name">{title}</div>
-                </div>
-                <div className="more-button"></div>
-                <ul>
-                    {imageList && imageList.map((image) => (
-                    <img key={image.id}
-                        src={image.src}
-                        alt={image.alt}>
-                    </img>
-                    ))}
-                </ul>
-            </div>
-        </div>
-    );
+  useEffect(() => {
+    switch (status) {
+      case CREATED:
+        setIconImage(upArrowIcon);
+        break;
+      case PROGRESS:
+        setIconImage(playIcon);
+        break;
+      case COMPLETED:
+        setIconImage(checkIcon);
+        break;
+      case SELECTED:
+        setIconImage(pauseIcon);
+        break;
+    }
+  }, [status]);
+
+  return (
+    <div className={styles.issue_item_container} onClick={onClick}>
+      <img className={styles.iconImage} src={iconImage} alt={status} />
+      <h5 className='task-name'>{title}</h5>
+      <ul>
+        <p className={styles.date}>
+          {formatToDate(startDate)} ~ {formatToDate(endDate)}
+        </p>
+        {assigneeInfoList &&
+          assigneeInfoList.map(mem => (
+            <UserIcon key={mem.id} src={mem.img} alt={mem.name} />
+          ))}
+      </ul>
+    </div>
+  );
 };
 
 export default IssueItem;

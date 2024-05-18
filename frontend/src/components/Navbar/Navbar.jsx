@@ -1,51 +1,60 @@
-import React, {useState} from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '../../features/auth/authSlice'
-import './Navbar.module.scss'
-import { useRecoilState } from "recoil";
-import { MenuSidebarState, MessengerSidebarState } from '../../recoil/recoil';
+import useLogout from '@hook/useLogout';
+import { authState } from '@recoil/auth';
+import { Link } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import styles from './Navbar.module.scss';
 
+import { menuSidebarState, messengerSidebarState } from '@recoil/commonPersist';
+import { LogOut } from '@styled-icons/boxicons-regular/LogOut';
+import { Menu } from '@styled-icons/boxicons-regular/Menu';
+import { CommentDetail } from '@styled-icons/boxicons-solid/CommentDetail';
+import IconButton from '../IconButton/IconButton';
 
 const NavBar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useRecoilState(MenuSidebarState);
+  const [isOpen, setIsOpen] = useRecoilState(menuSidebarState);
+
+  const [isMessengerOpen, setIsMessengerOpen] = useRecoilState(
+    messengerSidebarState,
+  );
 
   const ShowMenuSidebar = () => {
-      isMenuOpen === true ? setIsMenuOpen(false) : setIsMenuOpen(true);
-  }
-
-  const [isMessengerOpen, setIsMessengerOpen] = useRecoilState(MessengerSidebarState);
+    setIsOpen(!isOpen);
+  };
 
   const ShowMessengerSidebar = () => {
-      isMessengerOpen === true ? setIsMessengerOpen(false) : setIsMessengerOpen(true);
-  }
+    setIsMessengerOpen(!isMessengerOpen);
+  };
 
-  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [userInfo] = useRecoilState(authState);
 
-  if (isAuthenticated) {
-    return (
-      <nav>
-        <ul>
-          <li><Link to="/" className="navbar-brand text-primary mr-0">H-UP</Link></li>
-          <li><Link to="/" className="navbar-brand text-secondary mr-0">Project</Link></li>
-          <li><div className="btn" onClick={ShowMenuSidebar}>메뉴</div></li>
-          <li><div className="btn" onClick={ShowMessengerSidebar}>메신저</div></li>
-          <li><div className="btn" onClick={()=> {dispatch(logout()); navigate('/LoginPage')}}>로그아웃</div></li>
-        </ul>
-      </nav>
-    );
-  } else {
-    return (
-      <nav>
-        <ul>
-          <li><Link to="/LoginPage" className="navbar-brand text-primary mr-0">H-UP</Link></li>
-        </ul>
-      </nav>
-    );
-  }
-  
+  const { logout } = useLogout();
+
+  return (
+    <nav>
+      <div className={styles.nav_container}>
+        <div>
+          <IconButton toDo={ShowMenuSidebar}>
+            <Menu />
+          </IconButton>
+        </div>
+        <div>
+          <Link to={userInfo.isLogin ? '/' : '/login'} className={styles.logo}>
+            H•UP
+          </Link>
+        </div>
+        <div
+          className={`${styles.btn_container} ${userInfo.isLogin ? styles.visible : ''}`}
+        >
+          <IconButton toDo={ShowMessengerSidebar}>
+            <CommentDetail />
+          </IconButton>
+          <IconButton toDo={logout}>
+            <LogOut />
+          </IconButton>
+        </div>
+      </div>
+    </nav>
+  );
 };
 
 export default NavBar;

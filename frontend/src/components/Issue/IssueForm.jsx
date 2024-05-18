@@ -1,59 +1,77 @@
-import React from 'react'
-import styles from './IssueForm.module.scss'
-import IssueItemContainer from "./IssueItemContainer";
-import { issueDummyList } from '../../test/issueData';
+import { issueState } from '@recoil/issue';
 import { useRecoilState } from 'recoil';
-import { issueListState } from '../../recoil/recoil';
+import styles from './IssueForm.module.scss';
+import IssueItemContainer from './IssueItemContainer';
 
 const IssueForm = () => {
+  const [issueList] = useRecoilState(issueState);
+  // const { startLoading, finishLoading } = MyLayout.useLoading();
+  // const { openDialog } = MyLayout.useDialog();
 
-    const [issueList, setIssueList] = useRecoilState(issueListState)
-    // const { startLoading, finishLoading } = MyLayout.useLoading();
-    // const { openDialog } = MyLayout.useDialog();
+  // const { id } = useParams(); // Get the project ID from useParams hook
 
-    const imminentDate = (issue) => {
-        const date = issue.end
+  // const getIssueList = async (id) => {
+  //   try {
+  //     const response = await LoadIssueList(id);
+  //     setIssueList(response.data.responseList);
+  //   } catch (error) {
+  //     console.error('Error fetching initial content:', error);
+  //   }
+  // };
 
-        const year = date.getFullYear();
-        const month = date.getMonth();
-        const day = date.getDate() - 7;
+  // useEffect(() => {
+  //   if (id > 0) {
+  //     getIssueList(id);
+  //   }
+  // }, [id]);
 
-        return new Date(year,month,day,0,0,0,0)
+  const imminentDate = issue => {
+    const date = issue.endDate;
+    if (!date) {
+      return new Date('2030-05-31');
     }
+    return new Date(date);
+  };
 
-    return (
-        <div className={styles.issue_page}>
-        {/* 이슈 목록 */}
-            <div className={styles.column1}>
-                <div className={styles.issue_section}>
-                <h4>이슈 목록</h4>
-                    <ul>
-                        {issueList.map((issue) => (
-                            <li key={issue.id}>
-                                <IssueItemContainer issue={issue} />
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            </div>
-            {/* 마감 임박 이슈 목록 */}
-            <div className={styles.column2}>
-                <div className={styles.imminent_issue_section}>
-                    <h4>마감이 임박한 이슈</h4>
-                    <ul>
-                        {issueList
-                            .filter((issue) => new Date() >= imminentDate(issue) && issue.progress !== '완료')
-                            .map((issue) => (
-                                <li key={issue.id}>
-                                    <IssueItemContainer issue={issue} />
-                                </li>
-                        ))}
-                    </ul>
-                </div>
-            </div>
+  return (
+    <div className={styles.issue_page}>
+      {/* 이슈 목록 */}
+      <div className={styles.column1}>
+        <div className={styles.issue_section}>
+          <ul>
+            {issueList &&
+              issueList.length > 0 &&
+              issueList.map(issue => (
+                <li key={issue.issueId}>
+                  <IssueItemContainer issue={issue} />
+                </li>
+              ))}
+          </ul>
         </div>
-    )
+      </div>
+      {/* 마감 임박 이슈 목록 */}
+      <div className={styles.column2}>
+        <div className={styles.imminent_issue_section}>
+          <h4>마감이 임박한 이슈</h4>
+          <ul>
+            {issueList &&
+              issueList.length > 0 &&
+              issueList
+                .filter(
+                  issue =>
+                    new Date() >= imminentDate(issue) &&
+                    issue.status !== 'COMPLETED',
+                )
+                .map(issue => (
+                  <li key={issue.issueId}>
+                    <IssueItemContainer issue={issue} />
+                  </li>
+                ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-}
-
-export default IssueForm
+export default IssueForm;
